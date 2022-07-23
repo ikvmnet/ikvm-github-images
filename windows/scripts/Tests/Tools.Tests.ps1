@@ -40,8 +40,8 @@ Describe "R" {
 
 Describe "DACFx" {
     It "DACFx" {
-        (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*).DisplayName -Contains "Microsoft SQL Server Data-Tier Application Framework (x64)" | Should -BeTrue
-        $sqlPackagePath = 'C:\Program Files\Microsoft SQL Server\150\DAC\bin\SqlPackage.exe'
+        (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*).DisplayName -Contains "Microsoft SQL Server Data-Tier Application Framework" | Should -BeTrue
+        $sqlPackagePath = 'C:\Program Files\Microsoft SQL Server\160\DAC\bin\SqlPackage.exe'
         "${sqlPackagePath}" | Should -Exist
     }
 
@@ -103,8 +103,7 @@ Describe "GoogleCloudSDK" -Skip:(Test-IsWin22) {
 
 Describe "NET48" {
     It "NET48" {
-        $netPath = (Get-DotnetFrameworkTools).Path.Split("<")[0]
-        ${netPath} + "4.8 Tools" | Should -Exist
+        (Get-DotnetFrameworkTools).Versions | Should -Contain "4.8"
     }
 }
 
@@ -199,5 +198,11 @@ Describe "Kotlin" {
 
     It "<toolName> is available" -TestCases ($kotlinPackages | ForEach-Object { @{ toolName = $_ } })  {
         "$toolName -version" | Should -ReturnZeroExitCode
+    }
+}
+
+Describe "SQL OLEDB Driver" -Skip:(Test-IsWin16) {
+    It "SQL OLEDB Driver" {
+        "HKLM:\SOFTWARE\Microsoft\MSOLEDBSQL" | Should -Exist
     }
 }

@@ -45,7 +45,10 @@ function Install-Binary
     $fileExtension = ([System.IO.Path]::GetExtension($Name)).Replace(".", "")
     if ($fileExtension -eq "msi")
     {
-        $ArgumentList = ('/i', $filePath, '/QN', '/norestart')
+        if (-not $ArgumentList)
+        {
+            $ArgumentList = ('/i', $filePath, '/QN', '/norestart')
+        }
         $filePath = "msiexec.exe"
     }
 
@@ -183,7 +186,7 @@ function Start-DownloadWithRetry
 
     $filePath = Join-Path -Path $DownloadPath -ChildPath $Name
     $downloadStartTime = Get-Date
-    
+
     # Default retry logic for the package.
     while ($Retries -gt 0)
     {
@@ -226,7 +229,7 @@ function Get-VsixExtenstionFromMarketplace {
     )
 
     $extensionUri = $MarketplaceUri + $ExtensionMarketPlaceName
-    $request = Invoke-WebRequest -Uri $extensionUri -UseBasicParsing
+    $request = Invoke-SBWithRetry -Command { Invoke-WebRequest -Uri $extensionUri -UseBasicParsing } -RetryCount 20 -RetryIntervalSeconds 30
     $request -match 'UniqueIdentifierValue":"(?<extensionname>[^"]*)' | Out-Null
     $extensionName = $Matches.extensionname
     $request -match 'VsixId":"(?<vsixid>[^"]*)' | Out-Null
@@ -236,6 +239,17 @@ function Get-VsixExtenstionFromMarketplace {
     $request -match 'Microsoft\.VisualStudio\.Services\.Payload\.FileName":"(?<filename>[^"]*)' | Out-Null
     $fileName = $Matches.filename
     $downloadUri = $assetUri + "/" + $fileName
+    # ProBITools.MicrosoftReportProjectsforVisualStudio2022 has different URL https://github.com/actions/virtual-environments/issues/5340
+    switch ($ExtensionMarketPlaceName) {
+        "ProBITools.MicrosoftReportProjectsforVisualStudio2022" {
+            $fileName = "Microsoft.DataTools.ReportingServices.vsix"
+            $downloadUri = "https://download.microsoft.com/download/b/b/5/bb57be7e-ae72-4fc0-b528-d0ec224997bd/Microsoft.DataTools.ReportingServices.vsix"
+        }
+        "ProBITools.MicrosoftAnalysisServicesModelingProjects2022" {
+            $fileName = "Microsoft.DataTools.AnalysisServices.vsix"
+            $downloadUri = "https://download.microsoft.com/download/c/8/9/c896a7f2-d0fd-45ac-90e6-ff61f67523cb/Microsoft.DataTools.AnalysisServices.vsix"
+        }
+    }
 
     return [PSCustomObject] @{
         "ExtensionName" = $extensionName
@@ -271,12 +285,12 @@ function Install-VsixExtension
     try
     {
         $installPath = ${env:ProgramFiles(x86)}
-        
+
         if (Test-IsWin22)
         {
             $installPath = ${env:ProgramFiles}
         }
-        
+
         #There are 2 types of packages at the moment - exe and vsix
         if ($Name -match "vsix")
         {
@@ -578,15 +592,23 @@ function Get-GitHubPackageDownloadUrl {
         [int]$SearchInCount = 100
     )
 
-    if ($Version -eq "latest") { 
-        $Version = "*" 
+    if ($Version -eq "latest") {
+        $Version = "*"
     }
+
     $json = Invoke-RestMethod -Uri "https://api.github.com/repos/${RepoOwner}/${RepoName}/releases?per_page=${SearchInCount}"
-    $versionToDownload = ($json.Where{ $_.prerelease -eq $IsPrerelease }.tag_name |
-        Select-String -Pattern "\d+.\d+.\d+").Matches.Value |
-            Where-Object {$_ -Like "${Version}.*" -or $_ -eq ${Version}} |
-            Sort-Object {[version]$_} |
+    $tags = $json.Where{ $_.prerelease -eq $IsPrerelease -and $_.assets }.tag_name
+    $versionToDownload = $tags |
+            Select-String -Pattern "\d+.\d+.\d+" |
+            ForEach-Object { $_.Matches.Value } |
+            Where-Object { $_ -like "$Version.*" -or $_ -eq $Version } |
+            Sort-Object { [version]$_ } |
             Select-Object -Last 1
+
+    if (-not $versionToDownload) {
+        Write-Host "Failed to get a tag name from ${RepoOwner}/${RepoName} releases"
+        exit 1
+    }
 
     $UrlFilter = $UrlFilter -replace "{BinaryName}",$BinaryName -replace "{Version}",$versionToDownload
     $downloadUrl = $json.assets.browser_download_url -like $UrlFilter
