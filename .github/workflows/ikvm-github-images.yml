@@ -25,18 +25,16 @@ jobs:
         subscription-id: "0b41a26d-8ea0-4f1b-a652-ac81a0071ffb"
     - name: Packer Install
       run: sudo apt-get install -y packer
-    - uses: andrew-fennell/create-env-json@v3
-      id: create-env
-      with:
-        file-name: 'windows/windows-2022.vars.json'
-        managed_image_resource_group_name: ikvm-github-images
-        managed_image_name: ikvm-github-runner-windows-2022
-        shared_image_gallery_resource_group: ikvm-github-images
-        shared_image_gallery_name: ikvmgithubimages
-        shared_image_gallery_image_name: ikvm-github-runner-windows-2022
-        image_version: '0.0.0'
-        install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
-        location: eastus2
     - name: Packer Build
-      run: packer build -color=false -on-error=abort -var-file=windows/windows-2022.vars.json windows/windows-2022.json
+      run: |
+        packer build -color=false -on-error=abort \
+          -var managed_image_resource_group_name=ikvm-github-images \
+          -var managed_image_name=ikvm-github-runner-windows-2022 \
+          -var shared_image_gallery_resource_group=ikvm-github-images \
+          -var shared_image_gallery_name=ikvmgithubimages \
+          -var shared_image_gallery_image_name=ikvm-github-runner-windows-2022 \
+          -var image_version='0.0.0' \
+          -var install_password=iPhCrae0PQHP8EiETN5dffugE1eY6qQB \
+          -var location=eastus2 \
+          windows/windows-2022.json
       
