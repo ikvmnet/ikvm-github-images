@@ -34,6 +34,7 @@
         {
             "name": "vhd",
             "type": "azure-arm",
+			"use_azure_cli_auth": "{{user `use_azure_cli_auth`}}",
             "client_id": "{{user `client_id`}}",
             "client_secret": "{{user `client_secret`}}",
             "client_cert_path": "{{user `client_cert_path`}}",
