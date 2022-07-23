@@ -32,13 +32,13 @@ jobs:
         shared_image_gallery_resource_group: ikvm-devops-images
         shared_image_gallery_name: ikvmdevopsimages
         shared_image_gallery_image_name: ikvm-devops-runner-windows-server-2022
-        image_version: 0.0.0
+        image_version: '0.0.0'
         install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
         location: eastus2
-      - name: Packer Build
-        uses: hashicorp/packer-github-actions@master
-        with:
-          command: build
-          arguments: "-color=false -on-error=abort -var-file ./packer-vars.json"
-          target: "windows/windows-server-2022.json"
-          working_directory: packer
+    - name: Packer Build
+      uses: hashicorp/packer-github-actions@master
+      with:
+        command: build
+        arguments: "-color=false -on-error=abort -var-file ./packer-vars.json"
+        target: "windows/windows-server-2022.json"
+        working_directory: packer
