@@ -31,7 +31,7 @@ jobs:
       uses: hashicorp-contrib/setup-packer@v1
     - name: Packer Build
       run: >
-        packer build -color=false -on-error=abort
+        packer build -color=false -on-error=cleanup
         -var "use_azure_cli_auth=true"
         -var "subscription_id=${{ secrets.AZ_SUBSCRIPTION_ID }}"
         -var "build_resource_group_name=${{ secrets.AZ_BUILD_RESOURCE_GROUP_NAME }}"
