@@ -33,7 +33,7 @@ jobs:
           -var "shared_image_gallery_resource_group=ikvm-github-images" \
           -var "shared_image_gallery_name=ikvmgithubimages" \
           -var "shared_image_gallery_image_name=ikvm-github-runner-windows-2022" \
-          -var "image_version=0.0.0" \
+          -var "shared_image_gallery_image_version=0.0.0" \
           -var "install_password=iPhCrae0PQHP8EiETN5dffugE1eY6qQB" \
           -var "location=eastus2" \
           windows/windows-2022.json
