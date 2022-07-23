@@ -28,8 +28,9 @@ jobs:
       run: sudo apt-get install -y packer
     - name: Packer Build
       uses: docker://hashicorp/packer:latest
-      run: |
-        packer build -color=false -on-error=abort \
+      with:
+        args: |
+          -color=false -on-error=abort \
           -var "use_azure_cli_auth=true" \
           -var "subscription_id=0b41a26d-8ea0-4f1b-a652-ac81a0071ffb" \
           -var "build_resource_group_name=ikvm-github-images-build" \
