@@ -5,12 +5,16 @@ on:
     branches:
     - main
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   PKR_VAR_managed_image_resource_group_name: ikvm-devops-images
   PKR_VAR_shared_image_gallery_resource_group: ikvm-devops-images
   PKR_VAR_shared_image_gallery_name: ikvmdevopsimages
   PKR_VAR_install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
-
+      
 jobs:
   windows_server_2022:
     name: Windows Server 2022
@@ -41,5 +45,4 @@ jobs:
         PKR_VAR_location: eastus2
         PKR_VAR_managed_image_name: ikvm-devops-agent-windows-server-2022
         PKR_VAR_shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
-        PKR_VAR_temp_resource_group_name: packer-$(Build.BuildId)-$(System.JobId)
     
