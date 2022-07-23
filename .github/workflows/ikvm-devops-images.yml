@@ -28,12 +28,12 @@ jobs:
       with:
         file-name: 'packer-vars.json'
         managed_image_resource_group_name: ikvm-devops-images
+        managed_image_name: ikvm-devops-runner-windows-server-2022
         shared_image_gallery_resource_group: ikvm-devops-images
         shared_image_gallery_name: ikvmdevopsimages
+        shared_image_gallery_image_name: ikvm-devops-runner-windows-server-2022
         install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
         location: eastus2
-        managed_image_name: ikvm-devops-agent-windows-server-2022
-        shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
     - name: Packer Build
       uses: riznob/packer-build-action@v1.5
       with:
