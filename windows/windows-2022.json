@@ -20,7 +20,6 @@
             "name": "vhd",
             "type": "azure-arm",
 			"use_azure_cli_auth": "{{user `use_azure_cli_auth`}}",
-            "subscription_id": "{{user `subscription_id`}}",
             "os_disk_size_gb": "256",
             "vm_size": "{{user `vm_size`}}",
             "build_resource_group_name": "{{user `build_resource_group_name`}}",
