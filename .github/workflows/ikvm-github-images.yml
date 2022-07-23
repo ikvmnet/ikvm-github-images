@@ -28,6 +28,7 @@ jobs:
     - name: Packer Build
       run: |
         packer build -color=false -on-error=abort \
+          -var "subscription_id=0b41a26d-8ea0-4f1b-a652-ac81a0071ffb" \
           -var "managed_image_resource_group_name=ikvm-github-images" \
           -var "managed_image_name=ikvm-github-runner-windows-2022" \
           -var "shared_image_gallery_resource_group=ikvm-github-images" \
