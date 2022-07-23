@@ -6,10 +6,10 @@ on:
     - main
 
 env:
-  managed_image_resource_group_name: ikvm-devops-images
-  shared_image_gallery_resource_group: ikvm-devops-images
-  shared_image_gallery_name: ikvmdevopsimages
-  install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
+  PKR_VAR_managed_image_resource_group_name: ikvm-devops-images
+  PKR_VAR_shared_image_gallery_resource_group: ikvm-devops-images
+  PKR_VAR_shared_image_gallery_name: ikvmdevopsimages
+  PKR_VAR_install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
 
 jobs:
   windows_server_2022:
@@ -18,6 +18,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     - name: Validate Image
       uses: hashicorp/packer-github-actions@master
       with:
@@ -31,8 +37,8 @@ jobs:
         arguments: "-color=false -on-error=abort"
         target: 'windows/windows-server-2022.json'
       env:
-        location: eastus2
-        managed_image_name: ikvm-devops-agent-windows-server-2022
-        shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
-        temp_resource_group_name: packer-$(Build.BuildId)-$(System.JobId)
+        PKR_VAR_location: eastus2
+        PKR_VAR_managed_image_name: ikvm-devops-agent-windows-server-2022
+        PKR_VAR_shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
+        PKR_VAR_temp_resource_group_name: packer-$(Build.BuildId)-$(System.JobId)
     
