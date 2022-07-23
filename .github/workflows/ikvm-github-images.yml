@@ -30,15 +30,15 @@ jobs:
       run: >
         packer build -color=false -on-error=abort
         -var "use_azure_cli_auth=true"
-        -var "subscription_id=0b41a26d-8ea0-4f1b-a652-ac81a0071ffb"
-        -var "build_resource_group_name=ikvm-github-images-build"
-        -var "managed_image_resource_group_name=ikvm-github-images"
+        -var "subscription_id=${{ secrets.AZ_SUBSCRIPTION_ID }}"
+        -var "build_resource_group_name=${{ secrets.AZ_BUILD_RESOURCE_GROUP_NAME }}"
+        -var "managed_image_resource_group_name=${{ secrets.AZ_IMAGE_RESOURCE_GROUP_NAME }}"
         -var "managed_image_name=ikvm-github-runner-windows-2022"
-        -var "shared_image_gallery_resource_group=ikvm-github-images"
-        -var "shared_image_gallery_name=ikvmgithubimages"
+        -var "shared_image_gallery_resource_group=${{ secrets.AZ_IMAGE_RESOURCE_GROUP_NAME }}"
+        -var "shared_image_gallery_name=${{ secrets.AZ_IMAGE_GALLARY_NAME }}"
         -var "shared_image_gallery_image_name=ikvm-github-runner-windows-2022"
         -var "shared_image_gallery_image_version=0.0.0"
         -var "install_password=iPhCrae0PQHP8EiETN5dffugE1eY6qQB"
-        -var "location=eastus2"
+        -var "location=${{ secrets.AZ_LOCATION }}"
         windows/windows-2022.json
       
