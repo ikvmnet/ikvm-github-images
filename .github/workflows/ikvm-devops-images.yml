@@ -18,6 +18,7 @@ env:
 jobs:
   windows_server_2022:
     name: Windows Server 2022
+    environment: default
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
