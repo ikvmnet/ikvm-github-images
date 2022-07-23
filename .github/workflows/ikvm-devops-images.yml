@@ -2,7 +2,8 @@ name: 'ikvm-devops-images'
 
 on:
   push:
-    branches: [ main ]
+    branches:
+    - main
 
 env:
   managed_image_resource_group_name: ikvm-devops-images
@@ -11,27 +12,26 @@ env:
   install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
 
 jobs:
-  - job: windows_server_2022
-    name: Windows Server 2022
-    runs-on: ubuntu-latest
-    timeoutInMinutes: 600
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Validate Image
-      uses: hashicorp/packer-github-actions@master
-      with:
-        command: validate
-        arguments: -syntax-only
-        target: 'windows/windows-server-2022.json'
-    - name: Build Image
-      uses: hashicorp/packer-github-actions@master
-      with:
-        command: build
-        arguments: "-color=false -on-error=abort"
-        target: 'windows/windows-server-2022.json'
-      env:
-        location=eastus2
-        managed_image_name=ikvm-devops-agent-windows-server-2022
-        shared_image_gallery_image_name=ikvm-devops-agent-windows-server-2022
-        temp_resource_group_name=packer-$(Build.BuildId)-$(System.JobId)
+- job: windows_server_2022
+  name: Windows Server 2022
+  runs-on: ubuntu-latest
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v2
+  - name: Validate Image
+    uses: hashicorp/packer-github-actions@master
+    with:
+      command: validate
+      arguments: -syntax-only
+      target: 'windows/windows-server-2022.json'
+  - name: Build Image
+    uses: hashicorp/packer-github-actions@master
+    with:
+      command: build
+      arguments: "-color=false -on-error=abort"
+      target: 'windows/windows-server-2022.json'
+    env:
+      location=eastus2
+      managed_image_name=ikvm-devops-agent-windows-server-2022
+      shared_image_gallery_image_name=ikvm-devops-agent-windows-server-2022
+      temp_resource_group_name=packer-$(Build.BuildId)-$(System.JobId)
