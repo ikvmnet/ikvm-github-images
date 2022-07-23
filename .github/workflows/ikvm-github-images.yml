@@ -38,5 +38,5 @@ jobs:
         install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
         location: eastus2
     - name: Packer Build
-      run: packer -color=false -on-error=abort -var-file=windows/windows-2022.vars.json windows/windows-2022.json
+      run: packer build -color=false -on-error=abort -var-file=windows/windows-2022.vars.json windows/windows-2022.json
       
