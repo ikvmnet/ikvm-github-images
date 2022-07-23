@@ -14,6 +14,7 @@ jobs:
     name: Windows 2022
     environment: alethic
     runs-on: ubuntu-latest
+    timeout-minutes: 600
     steps:
     - name: Checkout Source
       uses: actions/checkout@v3
