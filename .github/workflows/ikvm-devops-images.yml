@@ -15,8 +15,8 @@ jobs:
     environment: alethic
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Checkout Source
+      uses: actions/checkout@v3
     - name: 'Azure Login'
       uses: azure/login@v1
       with:
@@ -34,9 +34,10 @@ jobs:
         location: eastus2
         managed_image_name: ikvm-devops-agent-windows-server-2022
         shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
-    - name: Build Image
-      uses: hashicorp/packer-github-actions@master
+    - name: Packer Build
+      uses: riznob/packer-build-action@v1.5
       with:
-        command: build
-        arguments: "-color=false -on-error=abort"
-        target: 'windows/windows-server-2022.json'
+        templateFile: 'windows/windows-server-2022.json'
+        varFile: 'packer-vars.json'
+        workingDir: '.'
+        
