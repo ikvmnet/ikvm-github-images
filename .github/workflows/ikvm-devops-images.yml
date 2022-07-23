@@ -23,7 +23,7 @@ jobs:
         client-id: "04ce8e2a-38ad-4252-b8ba-b1604a911b48"
         tenant-id: "fce092d1-b0b2-407f-a998-2fb77ebf4cc9"
         subscription-id: "0b41a26d-8ea0-4f1b-a652-ac81a0071ffb"
-    - uses: schdck/create-env-json@v1
+    - uses: andrew-fennell/create-env-json@v3
       id: create-env
       with:
         file-name: 'packer-vars.json'
@@ -37,7 +37,6 @@ jobs:
     - name: Packer Build
       uses: riznob/packer-build-action@v1.5
       with:
-        templateFile: 'windows/windows-server-2022.json'
-        varFile: 'packer-vars.json'
-        workingDir: '.'
-        
+        templateFile: "windows/windows-server-2022.json"
+        varFile: "packer-vars.json"
+        workingDir: .
