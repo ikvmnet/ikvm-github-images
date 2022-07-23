@@ -29,18 +29,18 @@ jobs:
     - name: Packer Build
       uses: docker://hashicorp/packer:latest
       with:
-        args: |
-          build -color=false -on-error=abort \
-          -var "use_azure_cli_auth=true" \
-          -var "subscription_id=0b41a26d-8ea0-4f1b-a652-ac81a0071ffb" \
-          -var "build_resource_group_name=ikvm-github-images-build" \
-          -var "managed_image_resource_group_name=ikvm-github-images" \
-          -var "managed_image_name=ikvm-github-runner-windows-2022" \
-          -var "shared_image_gallery_resource_group=ikvm-github-images" \
-          -var "shared_image_gallery_name=ikvmgithubimages" \
-          -var "shared_image_gallery_image_name=ikvm-github-runner-windows-2022" \
-          -var "shared_image_gallery_image_version=0.0.0" \
-          -var "install_password=iPhCrae0PQHP8EiETN5dffugE1eY6qQB" \
-          -var "location=eastus2" \
+        args: >
+          build -color=false -on-error=abort
+          -var "use_azure_cli_auth=true"
+          -var "subscription_id=0b41a26d-8ea0-4f1b-a652-ac81a0071ffb"
+          -var "build_resource_group_name=ikvm-github-images-build"
+          -var "managed_image_resource_group_name=ikvm-github-images"
+          -var "managed_image_name=ikvm-github-runner-windows-2022"
+          -var "shared_image_gallery_resource_group=ikvm-github-images"
+          -var "shared_image_gallery_name=ikvmgithubimages"
+          -var "shared_image_gallery_image_name=ikvm-github-runner-windows-2022"
+          -var "shared_image_gallery_image_version=0.0.0"
+          -var "install_password=iPhCrae0PQHP8EiETN5dffugE1eY6qQB"
+          -var "location=eastus2"
           windows/windows-2022.json
       
