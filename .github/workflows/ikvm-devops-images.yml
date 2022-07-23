@@ -18,12 +18,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: 'Az CLI login'
+    - name: 'Azure Login'
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-id: "731ad181-4fc2-4493-aa07-dfae73961c14"
+        client-secret: "H6x.il0dBlGro8M.-Zdl.ZF0T7dN45S.In"
+        tenant-id: "fce092d1-b0b2-407f-a998-2fb77ebf4cc9"
+        subscription-id: "0b41a26d-8ea0-4f1b-a652-ac81a0071ffb"
     - name: Validate Image
       uses: hashicorp/packer-github-actions@master
       with:
