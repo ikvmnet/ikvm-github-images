@@ -27,6 +27,7 @@ jobs:
     - name: Packer Install
       run: sudo apt-get install -y packer
     - name: Packer Build
+      uses: docker://hashicorp/packer:latest
       run: |
         packer build -color=false -on-error=abort \
           -var "use_azure_cli_auth=true" \
