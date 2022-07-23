@@ -31,8 +31,8 @@ jobs:
         arguments: "-color=false -on-error=abort"
         target: 'windows/windows-server-2022.json'
       env:
-        location=eastus2
-        managed_image_name=ikvm-devops-agent-windows-server-2022
-        shared_image_gallery_image_name=ikvm-devops-agent-windows-server-2022
-        temp_resource_group_name=packer-$(Build.BuildId)-$(System.JobId)
+        location: eastus2
+        managed_image_name: ikvm-devops-agent-windows-server-2022
+        shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
+        temp_resource_group_name: packer-$(Build.BuildId)-$(System.JobId)
     
