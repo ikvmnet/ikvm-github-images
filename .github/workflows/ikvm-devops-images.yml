@@ -8,12 +8,6 @@ on:
 permissions:
   id-token: write
   contents: read
-
-env:
-  PKR_VAR_managed_image_resource_group_name: ikvm-devops-images
-  PKR_VAR_shared_image_gallery_resource_group: ikvm-devops-images
-  PKR_VAR_shared_image_gallery_name: ikvmdevopsimages
-  PKR_VAR_install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
       
 jobs:
   windows_server_2022:
@@ -29,20 +23,20 @@ jobs:
         client-id: "04ce8e2a-38ad-4252-b8ba-b1604a911b48"
         tenant-id: "fce092d1-b0b2-407f-a998-2fb77ebf4cc9"
         subscription-id: "0b41a26d-8ea0-4f1b-a652-ac81a0071ffb"
-    - name: Validate Image
-      uses: hashicorp/packer-github-actions@master
+    - uses: schdck/create-env-json@v1
+      id: create-env
       with:
-        command: validate
-        arguments: -syntax-only
-        target: 'windows/windows-server-2022.json'
+        file-name: 'packer-vars.json'
+        managed_image_resource_group_name: ikvm-devops-images
+        shared_image_gallery_resource_group: ikvm-devops-images
+        shared_image_gallery_name: ikvmdevopsimages
+        install_password: iPhCrae0PQHP8EiETN5dffugE1eY6qQB
+        location: eastus2
+        managed_image_name: ikvm-devops-agent-windows-server-2022
+        shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
     - name: Build Image
       uses: hashicorp/packer-github-actions@master
       with:
         command: build
         arguments: "-color=false -on-error=abort"
         target: 'windows/windows-server-2022.json'
-      env:
-        PKR_VAR_location: eastus2
-        PKR_VAR_managed_image_name: ikvm-devops-agent-windows-server-2022
-        PKR_VAR_shared_image_gallery_image_name: ikvm-devops-agent-windows-server-2022
-    
